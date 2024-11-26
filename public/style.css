@@ -1,0 +1,131 @@
+body {
+    background-color: #f7f7f7;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Arial', sans-serif;
+}
+
+header {
+    background-color: #343a40;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #343a40;
+    color: white;
+    transition: all 0.3s;
+}
+
+.sidebar a {
+    color: white;
+    font-weight: bold;
+    margin: 10px 0;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #495057;
+}
+
+.sidebar .btn {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.content {
+    padding: 20px;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.main-content {
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+[_{{{CITATION{{{_1{](https://github.com/mustafashokry555/Center/tree/36a0f7cfd5d74c1238616eb5f3dcabcb6befe6a8/secretary%2Flogin-form.php)[_{{{CITATION{{{_2{](https://github.com/Abosaad20/my_test/tree/e0278eea8932e789740b8932aaa781559b7bde4a/new%2Fdash.php)[_{{{CITATION{{{_3{](https://github.com/DawidKapka/blj-blog/tree/24120c0584dc904c08c33b54ca4cb3b3ba864462/views%2Fheader.php)[_{{{CITATION{{{_4{](https://github.com/Stanhoucke/flask_web_calculator/tree/7a357b9189ce90a53daf8e8812a699e1917b7c73/css_media_queries%2Fmedia_queries.md)[_{{{CITATION{{{_5{](https://github.com/s-bhageloe/camping-village/tree/6ec5b51113987231226dc1f16526978b7afa51bd/Beroepsproject%20camping%2Fcontact.php)[_{{{CITATION{{{_6{](https://github.com/salah-99/pro/tree/b48e691d8178fd1c0332b0da955a2196a460db56/Home.php)[_{{{CITATION{{{_7{](https://github.com/Innocentkonan93/jardindelivres/tree/df852d9fca0bf3313d89dbf5dea7afeb7f2279c6/JDL%2Fedit.php)[_{{{CITATION{{{_8{](https://github.com/AlinaRusuAW/magazin/tree/29f25cdb56c86930ab7db954a767478e3536852d/index.php)[_{{{CITATION{{{_9{](https://github.com/gilmour59/ticketsystem/tree/a80006fdf94427a7f89847448f67d6d79b24d65e/admin%2Fusers.php)[_{{{CITATION{{{_10{](https://github.com/Daniel-Georgiev/sampleWebsite/tree/1d4883418b6116247e17e4975c233c3ef155a0fc/header.php)[_{{{CITATION{{{_11{](https://github.com/abd-aljlil/utopians/tree/25b309d88b986e2f15e2e514d8456364e3651e53/utopians_dashboard%2Fresources%2Fviews%2Fpopup%2FCP.blade.php)[_{{{CITATION{{{_12{](https://github.com/ma-karimi/Digikala-Clone/tree/dee5505a82f395bad9b2c2afd1d9f4fedb874c5b/resources%2Fviews%2Flayouts%2Fusers.blade.php)[_{{{CITATION{{{_13{](https://github.com/skull8944/course_selection/tree/974d23a4d93b1f2af1e315b96159774ffcd0715b/student.php)[_{{{CITATION{{{_14{](https://github.com/NataponThongtuay/Stock/tree/c36629339cd41dba4bb291737720115901bdf7ca/public%2Fcreate_JOB.php)
+    th, td {
+        padding: 15px;
+        text-align: left;
+        transition: background-color 0.3s;
+    }
+    
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    td {
+        background-color: #f8f9fa;
+    }
+    
+    td:hover {
+        background-color: #e9ecef;
+    }
+    
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    .modal-content {
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .animated {
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    .fadeIn {
+        animation-name: fadeIn;
+    }
+    

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>إدارة الأجهزة</title>
+    <style>
+        body {
+            background: #f4f4f9;
+            color: #333;
+            font-family: 'Rubik', sans-serif;
+        }
+        .card {
+            border-radius: 15px;
+            border: none;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .header-section, .subheader-section {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-section h1, .subheader-section h2 {
+            margin: 0;
+        }
+        .header-section h1 {
+            text-align: center;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        footer {
+            background: #6a1b9a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .modal-content {
+            background: #edb60efa;
+        }
+        /* تنسيق الشريط الجانبي */
+
+.sidebar a {
+    color: white; /* لون الروابط */
+    display: block; /* جعل الروابط ككتل */
+    padding: 10px 20px; /* مساحة داخلية للروابط */
+    text-decoration: none; /* إزالة التسطير */
+    font-size: 18px; /* حجم الخط */
+}
+
+.sidebar a i {
+    margin-right: 10px; /* مسافة بين الأيقونة والنص */
+}
+
+.sidebar a:hover {
+    background-color: #1A252F; /* تغيير لون الخلفية عند التمرير */
+}
+
+.sidebar .user-info {
+    display: flex; /* استخدام Flexbox لتنسيق المعلومات */
+    align-items: center; /* محاذاة عموديًا */
+    padding: 10px 20px; /* مساحة داخلية */
+    background-color: #34495E; /* لون خلفية قسم معلومات المستخدم */
+    color: white; /* لون النص */
+}
+
+.sidebar-footer {
+    position: absolute; /* وضعه في الأسفل */
+    bottom: 0; /* محاذاة إلى الأسفل */
+    width: 100%; /* عرض كامل */
+    padding: 10px 20px; /* مساحة داخلية */
+}
+
+ /* Button Styling */
+ .btn {
+            background-color: #3498DB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+    
+        .btn:hover {
+            background-color: #2980B9;
+        }
+    
+        .btn-success {
+            background-color: #28a745;
+        }
+    
+        .btn-success:hover {
+            background-color: #218838;
+        }
+    
+
+body {
+            display: flex; /* استخدام flexbox لتنسيق الصفحة */
+            margin: 0;
+            height: 100vh; /* جعل ارتفاع الصفحة 100% */
+        }
+
+        .sidebar {
+            width: 250px; /* عرض الشريط الجانبي */
+            background-color: #2C3E50; /* لون خلفية الشريط الجانبي */
+            color: white; /* لون النص */
+            padding: 20px; /* مساحة داخلية */
+            flex-shrink: 0; /* منع الشريط الجانبي من الانكماش */
+            position: relative; /* لتسهيل التنسيق */
+            z-index: 1000; /* تأكد من أن الشريط الجانبي فوق المحتوى */
+        }
+
+        .main-content {
+            flex-grow: 1; /* السماح للمحتوى بالنمو لملء المساحة المتبقية */
+            padding: 20px; /* مساحة داخلية */
+            background-color: #ECF0F1; /* لون خلفية المحتوى */
+            overflow-y: auto; /* السماح بالتمرير العمودي إذا كانت المحتويات أكبر من المساحة */
+        }
+
+        .header-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header-section h1 {
+            margin: 0;
+        }
+        #specsContainer .row {
+    margin-bottom: 10px;
+}
+#specsContainer input {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.notifications {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e1b12c; /* لون الخلفية */
+    border-radius: 10px; /* زوايا دائرية */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    transition: transform 0.3s; /* تأثير التحريك */
+}
+
+.notifications:hover {
+    transform: translateY(-5px); /* تحريك عند التمرير */
+}
+
+.notifications h5 {
+    margin-bottom: 15px;
+    color: #333; /* لون العنوان */
+    font-size: 1.5rem; /* حجم الخط */
+    text-align: center; /* محاذاة إلى المنتصف */
+    font-family: 'Rubik', sans-serif; /* خط أنيق */
+}
+
+#notificationList {
+    list-style-type: none; /* إزالة النقاط من القائمة */
+    padding: 0; /* إزالة الحشو */
+}
+
+#notificationList li {
+    padding: 10px 15px; /* مساحة داخلية */
+    border-radius: 8px; /* زوايا دائرية */
+    margin-bottom: 10px; /* مسافة بين العناصر */
+    background-color: #f0f4f8; /* لون خلفية العنصر */
+    border-left: 5px solid #3498db; /* شريط ملون على اليسار */
+    transition: background-color 0.3s, transform 0.3s; /* تأثير تغيير اللون والتحريك */
+}
+
+#notificationList li:hover {
+    background-color: #e0e7ef; /* لون خلفية عند التمرير */
+    transform: scale(1.02); /* تأثير التحريك عند التمرير */
+}
+
+#notificationList li .device-name {
+    font-weight: bold; /* جعل اسم الجهاز بارز */
+    color: #2c3e50; /* لون نص الجهاز */
+}
+
+#notificationList li .backup-date {
+    font-size: 0.9rem; /* حجم خط أصغر لتاريخ الباك أب */
+    color: #c23616; /* لون رمادي */
+}
+.device-info {
+    cursor: pointer; /* تغيير المؤشر عند التمرير فوق العنصر */
+    padding: 10px; /* مساحة داخلية */
+    background-color: #f0f4f8; /* لون خلفية العنصر */
+    border-radius: 8px; /* زوايا دائرية */
+    transition: background-color 0.3s; /* تأثير تغيير اللون */
+}
+
+.device-info:hover {
+    background-color: #e0e7ef; /* لون خلفية عند التمرير */
+}
+
+.backup-date {
+    padding: 5px 15px; /* مساحة داخلية */
+    color: #7f8c8d; /* لون رمادي */
+    font-size: 0.9rem; /* حجم خط أصغر */
+    margin-top: 5px; /* مسافة من الأعلى */
+}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="user-info">
+            <span><i class="fas fa-user"></i> <span id="username"></span></span>
+            
+        </div>
+            <!-- قسم الإشعارات -->
+    <div class="notifications">
+        <h5>الإشعارات</h5>
+        <ul id="notificationList">
+            <!-- سيتم إضافة الإشعارات هنا -->
+        </ul>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
+    </div>
+        <a href="complaints.html" onclick="loadPage('complaints.html')"><i class="fa-solid fa-bell"></i> الشكاوى</a>
+        <a href="employees.html" onclick="loadPage('employees.html')"><i class="fas fa-users"></i> الموظفين</a>
+        <a href="offices.html" onclick="loadPage('offices.html')"><i class="fas fa-building"></i> المكاتب</a>
+        <a href="devices.html" onclick="loadPage('devices.html')"><i class="fas fa-desktop"></i> الأجهزة</a>
+        <div class="sidebar-footer">
+            <button class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header-section">
+            <h1>قائمة الأجهزة</h1>
+        </div>
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addDeviceModal">إضافة جهاز جديد</button>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>اسم الجهاز</th>
+                    <th>النوع</th>
+                    <th>عنوان IP</th>
+                    <th>القسم</th>
+                    <th>آخر تاريخ باك أب</th>
+                    <th>تاريخ الباك أب القادم</th>
+                    <th>الإجراءات</th> <!-- عمود الإجراءات -->
+                </tr>
+            </thead>
+            <tbody id="deviceTable">
+                <!-- سيتم إضافة الصفوف هنا -->
+            </tbody>
+        </table>
+    </div>
+<!-- نموذج تحديث تواريخ الباك أب -->
+<div class="modal fade" id="updateBackupDatesModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تحديث تواريخ الباك أب</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="updateBackupDatesForm">
+                    <input type="hidden" id="updateDeviceId">
+                    <div class="form-group">
+                        <label>آخر تاريخ باك أب</label>
+                        <input type="date" class="form-control" id="lastBackupDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ الباك أب القادم</label>
+                        <input type="date" class="form-control" id="nextBackupDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="updateBackupDates()">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal عرض المواصفات -->
+<div class="modal fade" id="specsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">مواصفات الجهاز</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="specsTable">
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- نافذة تأكيد الحذف -->
+<div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeConfirmDeleteModal()">&times;</span>
+        <h2>تأكيد الحذف</h2>
+        <p>هل أنت متأكد من حذف هذا الجهاز؟</p>
+        <button class="btn btn-danger" id="confirmDeleteBtn">حذف</button>
+        <button class="btn btn-secondary" onclick="closeConfirmDeleteModal()">إلغاء</button>
+    </div>
+</div>
+
+<!-- نافذة تعديل الجهاز -->
+<div class="modal fade" id="editDeviceModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل الجهاز</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editDeviceForm">
+                    <input type="hidden" id="editDeviceId">
+                    
+                    <div class="form-group">
+                        <label for="editDeviceName">اسم الجهاز</label>
+                        <input type="text" class="form-control" id="editDeviceName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDeviceType">نوع الجهاز</label>
+                        <input type="text" class="form-control" id="editDeviceType" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDeviceIp">عنوان IP</label>
+                        <input type="text" class="form-control" id="editDeviceIp" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDeviceDepartment">القسم</label>
+                        <input type="text" class="form-control" id="editDeviceDepartment" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDeviceSpecs">المواصفات</label>
+                        <div id="specsContainer">
+                            <!-- سيتم إضافة الخانات هنا بشكل ديناميكي -->
+                        </div>
+                        <button type="button" class="btn btn-secondary mt-2" onclick="addSpecField()">
+                            إضافة مواصفة جديدة
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="saveDeviceChanges()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- نموذج إضافة جهاز -->
+    <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة جهاز جديد</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDeviceForm">
+                        <div class="form-group">
+                            <label>القسم</label>
+                            <select class="form-control" id="department" onchange="toggleDeviceFields()" required>
+                                <option value="">اختر القسم</option>
+                                <!-- سيتم تحميل الأقسام من قاعدة البيانات -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>اسم القسم</label>
+                            <input type="text" class="form-control" id="departmentName" readonly>
+                        </div>
+                        
+                        
+                        <div id="deviceFields" style="display: none;">
+                            <div class="form-group">
+                                <label>اسم الجهاز</label>
+                                <input type="text" class="form-control" id="deviceName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>النوع</label>
+                                <select class="form-control" id="deviceType" onchange="toggleSpecsFields()" required>
+                                    <option value="">اختر النوع</option>
+                                    <option value="كمبيوتر">كمبيوتر</option>
+                                    <option value="لابتوب">لابتوب</option>
+                                    <option value="طابعة">طابعة</option>
+                                    <option value="ماسح ضوئي">ماسح ضوئي</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>عنوان IP</label>
+                                <input type="text" class="form-control" id="deviceIP" required>
+                            </div>
+                            <div id="specsFields" style="display: none;">
+                                <div class="form-group">
+                                    <label>كارت الشاشة</label>
+                                    <input type="text" class="form-control" id="graphicsCard">
+                                </div>
+                                <div class="form-group">
+                                    <label>المعالج</label>
+                                    <input type="text" class="form-control" id="processor">
+                                </div>
+                                <div class="form-group">
+                                    <label>الرام</label>
+                                    <div id="ramFields"></div>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addRamField()">إضافة رام</button>
+                                </div>
+                                <div class="form-group">
+                                    <label>الهارد</label>
+                                    <div id="hardDiskFields"></div>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addHardDiskField()">إضافة هارد</button>
+                                </div>
+                                <div class="form-group">
+                                    <label>نظام التشغيل</label>
+                                    <input type="text" class="form-control" id="operatingSystem">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" onclick="addDevice()">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+
+// دالة لإغلاق نافذة تأكيد الحذف
+function closeConfirmDeleteModal() {
+    const modal = document.getElementById('confirmDeleteModal');
+    modal.style.display = 'none';
+}
+
+// دالة لتأكيد الحذف
+async function confirmDeleteDevice(departmentId, deviceId) {
+    const response = await fetch(`/api/department/${departmentId}/devices/${deviceId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        alert('تم حذف الجهاز بنجاح');
+        closeConfirmDeleteModal();
+        loadDevices(); // إعادة تحميل الأجهزة
+    } else {
+        alert('حدث خطأ أثناء حذف الجهاز.');
+    }
+}
+
+        // التحقق من حالة تسجيل الدخول
+        checkSession();
+    
+        function checkSession() {
+            fetch('/api/checkSession')
+                .then(response => {
+                    if (response.status !== 200) {
+                        window.location.href = '/login.html';
+                    } else {
+                        loadDevices();
+                        loadDepartments(); // تحميل الأقسام لعرضها في نموذج إضافة الجهاز
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    window.location.href = '/login.html';
+                });
+        }
+    
+        // تسجيل الخروج
+        function logout() {
+            fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(() => {
+                window.location.href = '/login.html';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    
+
+
+        // تحميل الأقسام
+        function loadDepartments() {
+            fetch('/api/departments')
+                .then(response => response.json())
+                .then(departments => {
+                    const departmentSelect = document.getElementById('department');
+                    departmentSelect.innerHTML = '<option value="">اختر القسم</option>';
+                    departments.forEach(department => {
+                        const option = document.createElement('option');
+                        option.value = department.id;
+                        option.textContent = department.name;
+                        departmentSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+// إضافة جهاز جديد
+function addDevice() {
+    const deviceData = {
+        name: document.getElementById('deviceName').value,
+        type: document.getElementById('deviceType').value,
+        ip: document.getElementById('deviceIP').value,
+        department: document.getElementById('departmentName').value, // هنا نقوم بحفظ اسم القسم من الخانة الجديدة
+        specs: getSpecsData()
+    };
+
+    fetch(`/api/department/${deviceData.department}/devices`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(deviceData)
+    })
+    .then(response => {
+        if (response.ok) {
+            $('#addDeviceModal').modal('hide');
+            loadDevices(); // إعادة تحميل الأجهزة
+        } else {
+            alert('حدث خطأ أثناء إضافة الجهاز.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+    
+// تحميل الأجهزة
+function loadDevices() {
+    fetch('/api/devices')
+        .then(response => response.json())
+        .then(devices => {
+            const tableBody = document.getElementById('deviceTable');
+            tableBody.innerHTML = ''; // تفريغ المحتوى الحالي
+            devices.forEach(device => {
+                const row = `
+                    <tr>
+                        <td>${device.name}</td>
+                        <td>${device.type}</td>
+                        <td>${device.ip}</td>
+                        <td>${device.department}</td>
+                        <td>${device.lastBackupDate ? new Date(device.lastBackupDate).toLocaleDateString('ar-EG') : 'غير متوفر'}</td>
+                        <td>${device.nextBackupDate ? new Date(device.nextBackupDate).toLocaleDateString('ar-EG') : 'غير متوفر'}</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick='showSpecs(${JSON.stringify(device.specs || {})})'>
+                                عرض المواصفات
+                            </button>
+                           <button class="btn btn-warning btn-sm mr-1" 
+        onclick='editDevice(${JSON.stringify(device)})'>
+        تعديل
+    </button>
+    <button class="btn btn-danger btn-sm" 
+        onclick="deleteDevice('${device.id}')">
+        حذف
+    </button>
+<button class="btn btn-success btn-sm" onclick="openUpdateBackupDatesModal('${device.id}', '${device.lastBackupDate || ''}', '${device.nextBackupDate || ''}')">
+                            تحديث تواريخ الباك أب
+                        </button>                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+// دالة لتحديث تواريخ الباك أب
+function saveBackupDates() {
+            const deviceId = document.getElementById('backupDeviceId').value;
+            const lastBackup = document.getElementById('updateLastBackupDate').value;
+            const nextBackup = document.getElementById('updateNextBackupDate').value;
+
+            // هنا يمكنك إضافة الكود لإرسال البيانات إلى الخادم
+
+            // إغلاق النموذج
+            $('#updateBackupDatesModal').modal('hide');
+        }
+        // دالة لحذف جهاز
+        function deleteDevice() {
+            const deviceId = document.getElementById('deleteDeviceId').value;
+
+            // هنا يمكنك إضافة الكود لإرسال طلب الحذف إلى الخادم
+
+            // إغلاق النموذج
+            $('#deleteDeviceModal').modal('hide');
+        }
+        // دالة لإضافة جهاز جديد
+        function addNewDevice() {
+    const name = document.getElementById('newDeviceName').value;
+    const type = document.getElementById('newDeviceType').value;
+    const ip = document.getElementById('newDeviceIP').value;
+    const department = document.getElementById('newDeviceDepartment').value;
+
+    // تعيين تواريخ الباك أب إلى قيم افتراضية
+    const lastBackupDate = new Date().toISOString().split('T')[0]; // التاريخ الحالي
+    const nextBackupDate = new Date();
+    nextBackupDate.setDate(nextBackupDate.getDate() + 30); // بعد 30 يوم
+    const nextBackupDateString = nextBackupDate.toISOString().split('T')[0];
+
+    // إنشاء كائن الجهاز
+    const newDevice = {
+        name: name,
+        type: type,
+        ip: ip,
+        department: department,
+        lastBackupDate: lastBackupDate, // إضافة تاريخ آخر باك أب
+        nextBackupDate: nextBackupDateString // إضافة تاريخ الباك أب القادم
+    };
+
+    // إرسال البيانات إلى الخادم
+    fetch('/api/department/' + department + '/devices', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newDevice)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('فشل في إضافة الجهاز');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('تم إضافة الجهاز بنجاح');
+        $('#addDeviceModal').modal('hide');
+        loadDevices(); // إعادة تحميل قائمة الأجهزة
+    })
+    .catch(error => {
+        console.error('خطأ:', error);
+        alert('حدث خطأ أثناء إضافة الجهاز');
+    });
+}
+function openUpdateBackupDatesModal(deviceId, lastBackupDate, nextBackupDate) {
+    // التأكد من وجود معرف الجهاز
+    if (!deviceId || deviceId === 'undefined') {
+        console.error('معرف الجهاز غير صالح');
+        alert('معرف الجهاز غير صالح. يرجى المحاولة مرة أخرى.');
+        return;
+    }
+
+    // تعيين معرف الجهاز
+    document.getElementById('updateDeviceId').value = deviceId;
+
+    // تعيين التواريخ الحالية
+    document.getElementById('lastBackupDate').value = lastBackupDate || '';
+    document.getElementById('nextBackupDate').value = nextBackupDate || '';
+
+    // فتح النافذة المنبثقة
+    $('#updateBackupDatesModal').modal('show');
+}
+
+function updateBackupDates() {
+    const deviceId = document.getElementById('updateDeviceId').value;
+    const lastBackupDate = document.getElementById('lastBackupDate').value;
+    const nextBackupDate = document.getElementById('nextBackupDate').value;
+
+    // التحقق من صحة المدخلات
+    if (!deviceId || deviceId === 'undefined') {
+        alert('معرف الجهاز غير صالح');
+        return;
+    }
+
+    if (!lastBackupDate || !nextBackupDate) {
+        alert('يرجى إدخال جميع التواريخ');
+        return;
+    }
+
+    // إرسال طلب التحديث
+    fetch(`/api/devices/${deviceId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            lastBackupDate: lastBackupDate,
+            nextBackupDate: nextBackupDate
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            // التعامل مع الأخطاء
+            return response.json().then(errorData => {
+                throw new Error(errorData.error || 'حدث خطأ أثناء التحديث');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // إغلاق النافذة وإعادة تحميل الأجهزة
+        $('#updateBackupDatesModal').modal('hide');
+        alert(data.message);
+        loadDevices(); // إعادة تحميل قائمة الأجهزة
+    })
+    .catch(error => {
+        console.error('خطأ:', error);
+        alert(error.message || 'حدث خطأ أثناء تحديث تواريخ الباك أب');
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+// دالة لإغلاق نافذة تأكيد الحذف
+function closeConfirmDeleteModal() {
+    const modal = document.getElementById('confirmDeleteModal');
+    modal.style.display = 'none';
+}
+
+// دالة لتأكيد الحذف
+async function confirmDeleteDevice(departmentId, deviceId) {
+    const response = await fetch(`/api/department/${departmentId}/devices/${deviceId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        alert('تم حذف الجهاز بنجاح');
+        loadDevices(); // إعادة تحميل الأجهزة بعد الحذف
+    } else {
+        alert('حدث خطأ أثناء حذف الجهاز.');
+    }
+}
+
+
+
+
+function deleteDevice(deviceId) {
+    console.log('Device ID:', deviceId); // تحقق من معرف الجهاز
+    const departmentId = 'your_department_id'; // استبدل هذا بمعرف القسم الصحيح
+    if (!deviceId) {
+        console.error('Device ID is undefined');
+        return; // تأكد من أن deviceId ليس undefined
+    }
+
+    fetch(`/api/department/${departmentId}/devices/${deviceId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('تم حذف الجهاز بنجاح');
+            loadDevices(); // إعادة تحميل قائمة الأجهزة
+        } else {
+            alert('حدث خطأ أثناء حذف الجهاز.');
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting device:', error);
+        alert('حدث خطأ أثناء حذف الجهاز.');
+    });
+}
+
+function editDevice(device) {
+    document.getElementById('editDeviceId').value = device.id;
+    document.getElementById('editDeviceName').value = device.name || '';
+    document.getElementById('editDeviceType').value = device.type || '';
+    document.getElementById('editDeviceIp').value = device.ip || '';
+    document.getElementById('editDeviceDepartment').value = device.department || '';
+    
+    // عرض المواصفات بشكل ديناميكي
+    const specsContainer = document.getElementById('specsContainer');
+    specsContainer.innerHTML = ''; // مسح المحتوى السابق
+
+    if (device.specs && typeof device.specs === 'object') {
+        Object.entries(device.specs).forEach(([key, value]) => {
+            addSpecField(key, value);
+        });
+    }
+
+    // إذا لم تكن هناك مواصفات، أضف خانة فارغة
+    if (!device.specs || Object.keys(device.specs).length === 0) {
+        addSpecField();
+    }
+
+    // عرض النافذة المنبثقة
+    $('#editDeviceModal').modal('show');
+}
+
+function addSpecField(key = '', value = '') {
+    const specsContainer = document.getElementById('specsContainer');
+    
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'row mb-2';
+    
+    const keyCol = document.createElement('div');
+    keyCol.className = 'col-5';
+    const keyInput = document.createElement('input');
+    keyInput.type = 'text';
+    keyInput.className = 'form-control';
+    keyInput.placeholder = 'اسم المواصفة';
+    keyInput.value = key;
+    keyInput.setAttribute('data-spec-key', 'true');
+    
+    const valueCol = document.createElement('div');
+    valueCol.className = 'col-5';
+    const valueInput = document.createElement('input');
+    valueInput.type = 'text';
+    valueInput.className = 'form-control';
+    valueInput.placeholder = 'قيمة المواصفة';
+    valueInput.value = value;
+    
+    const removeCol = document.createElement('div');
+    removeCol.className = 'col-2';
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'btn btn-danger';
+    removeButton.innerHTML = '×';
+    removeButton.onclick = () => rowDiv.remove();
+    
+    keyCol.appendChild(keyInput);
+    valueCol.appendChild(valueInput);
+    removeCol.appendChild(removeButton);
+    
+    rowDiv.appendChild(keyCol);
+    rowDiv.appendChild(valueCol);
+    rowDiv.appendChild(removeCol);
+    
+    specsContainer.appendChild(rowDiv);
+}
+
+
+// إظهار المواصفات
+function showSpecs(specs) {
+    const table = document.getElementById('specsTable').getElementsByTagName('tbody')[0];
+    table.innerHTML = '';
+    
+    if (specs) {
+        Object.entries(specs).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+                value = value.join(', ');
+            }
+            const row = `
+                <tr>
+                    <th>${key}</th>
+                    <td>${value}</td>
+                </tr>
+            `;
+            table.innerHTML += row;
+        });
+    } else {
+        table.innerHTML = '<tr><td colspan="2">لا توجد مواصفات متاحة</td></tr>';
+    }
+    
+    $('#specsModal').modal('show');
+}
+
+    
+// تبديل حقول الجهاز بناءً على القسم
+function toggleDeviceFields() {
+    const department = document.getElementById('department').value;
+    const deviceFields = document.getElementById('deviceFields');
+    const departmentNameField = document.getElementById('departmentName');
+    if (department) {
+        deviceFields.style.display = 'block';
+        departmentNameField.value = department; // نسخ اسم القسم إلى الخانة الجديدة
+    } else {
+        deviceFields.style.display = 'none';
+        departmentNameField.value = '';
+    }
+}
+
+function loadUpcomingBackupDevices() {
+    fetch('/api/devices') // تأكد من أن لديك نقطة نهاية API لجلب الأجهزة
+        .then(response => response.json())
+        .then(devices => {
+            const notificationList = document.getElementById('notificationList');
+            notificationList.innerHTML = ''; // تفريغ القائمة الحالية
+
+            const today = new Date();
+            const twoDaysFromNow = new Date();
+            twoDaysFromNow.setDate(today.getDate() + 2);
+
+            devices.forEach(device => {
+    const nextBackupDate = new Date(device.nextBackupDate);
+    if (nextBackupDate <= twoDaysFromNow && nextBackupDate >= today) {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <div class="device-info" onclick="toggleBackupDate(this)">
+                <span class="device-name">${device.name}</span> 
+                <span class="department-name">(${device.department})</span>
+            </div>
+            <div class="backup-date" style="display: none;">
+                <span>الباك أب القادم: ${nextBackupDate.toLocaleDateString()}</span>
+            </div>
+        `;
+        notificationList.appendChild(listItem);
+    }
+});
+
+            if (notificationList.children.length === 0) {
+                const noNotificationItem = document.createElement('li');
+                noNotificationItem.textContent = 'لا توجد أجهزة بحاجة إلى باك أب قريب.';
+                notificationList.appendChild(noNotificationItem);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching devices:', error);
+        });
+}
+document.addEventListener('DOMContentLoaded', function() {
+    loadDevices(); // تحميل الأجهزة
+    loadUpcomingBackupDevices(); // تحميل الأجهزة التي تحتاج إلى باك أب قريب
+});
+function toggleBackupDate(element) {
+    const backupDateDiv = element.nextElementSibling; // الحصول على العنصر التالي (تاريخ الباك أب)
+    if (backupDateDiv.style.display === "none" || backupDateDiv.style.display === "") {
+        backupDateDiv.style.display = "block"; // إظهار تاريخ الباك أب
+    } else {
+        backupDateDiv.style.display = "none"; // إخفاء تاريخ الباك أب
+    }
+}
+        // تبديل حقول المواصفات
+        function toggleSpecsFields() {
+            const type = document.getElementById('deviceType').value;
+            const specsFields = document.getElementById('specsFields');
+            specsFields.style.display = (type === 'كمبيوتر' || type === 'لابتوب') ? 'block' : 'none';
+        }
+    
+        // إضافة حقل رام
+        function addRamField() {
+            const container = document.getElementById('ramFields');
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" class="form-control ram-input" placeholder="حجم الرام">
+                <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    
+        // إضافة حقل هارد
+        function addHardDiskField() {
+            const container = document.getElementById('hardDiskFields');
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" class="form-control hard-disk-input" placeholder="حجم الهارد">
+                <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" onclick="this.parentElement.parentElement.remove()">حذف</button>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    
+        // الحصول على بيانات المواصفات
+        function getSpecsData() {
+            const type = document.getElementById('deviceType').value;
+            if (type !== 'كمبيوتر' && type !== 'لابتوب') {
+                return null;
+            }
+    
+            const specs = {
+                graphicsCard: document.getElementById('graphicsCard').value,
+                processor: document.getElementById('processor').value,
+                ram: Array.from(document.getElementsByClassName('ram-input')).map(input => input.value),
+                hardDisk: Array.from(document.getElementsByClassName('hard-disk-input')).map(input => input.value),
+                operatingSystem: document.getElementById('operatingSystem').value
+            };
+    
+            return specs;
+        }
+    
+
+
+// تحديث بيانات الجهاز
+function updateDevice() {
+    const deviceId = document.getElementById('editDeviceId').value;
+    const deviceData = {
+        name: document.getElementById('editDeviceName').value,
+        type: document.getElementById('editDeviceType').value,
+        ip: document.getElementById('editDeviceIP').value,
+        department: document.getElementById('editDepartment').value,
+        specs: getEditSpecsData()
+    };
+
+    fetch(`/api/devices/${deviceId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(deviceData)
+    })
+    .then(response => {
+        if (response.ok) {
+            $('#editDeviceModal').modal('hide');
+            loadDevices();
+        } else {
+            alert('حدث خطأ أثناء تعديل الجهاز.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+// تنظيف النموذج عند إغلاق Modal
+$('#addDeviceModal').on('hidden.bs.modal', function () {
+    document.getElementById('addDeviceForm').reset();
+    document.getElementById('ramFields').innerHTML = '';
+    document.getElementById('hardDiskFields').innerHTML = '';
+    document.getElementById('specsFields').style.display = 'none';
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/getUsername')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('لم يتم تسجيل الدخول');
+            }
+        })
+        .then(data => {
+            document.getElementById('username').textContent = data.username; // تأكد من وجود عنصر بالمعرف 'username'
+        })
+        .catch(error => {
+            console.error('Error fetching username:', error);
+            // يمكنك إعادة توجيه المستخدم إلى صفحة تسجيل الدخول إذا لم يكن مسجلاً دخوله
+            window.location.href = 'login.html';
+        });
+});
+</script>
+
+</body>
+</html>

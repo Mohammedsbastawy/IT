@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>تسجيل الدخول</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card-header, .btn-primary {
+            background-color: #6a1b9a; /* بنفسجي */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center text-white">
+                <h2>تسجيل الدخول</h2>
+            </div>
+            <div class="card-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">اسم المستخدم</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">كلمة المرور</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">تسجيل الدخول</button>
+                </form>
+                <button class="btn btn-secondary btn-block mt-3" onclick="showRegisterForm()">تسجيل حساب جديد</button>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <form id="registerForm" style="display: none;">
+            <h2 class="text-center">تسجيل حساب جديد</h2>
+            <div class="form-group">
+                <label for="newUsername">اسم المستخدم</label>
+                <input type="text" class="form-control" id="newUsername" required>
+            </div>
+            <div class="form-group">
+                <label for="newEmail">البريد الإلكتروني</label>
+                <input type="email" class="form-control" id="newEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">كلمة المرور</label>
+                <input type="password" class="form-control" id="newPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">تسجيل</button>
+        </form>
+    </div>
+</div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || 'index.html'; 
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+        if (response.ok) {
+            sessionStorage.setItem('loggedIn', 'true'); 
+            window.location.href = redirectUrl; 
+        } else {
+            alert('اسم المستخدم أو كلمة المرور غير صحيحة');
+        }
+    
+        });
+    });
+
+    function showRegisterForm() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+    }
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('newUsername').value;
+            const email = document.getElementById('newEmail').value;
+            const password = document.getElementById('newPassword').value;
+
+            fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, email, password })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('تم تسجيل الحساب بنجاح. الآن يمكنك تسجيل الدخول.');
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('loginForm').style.display = 'block';
+                } else {
+                    alert('فشل تسجيل الحساب. حاول مرة أخرى.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
