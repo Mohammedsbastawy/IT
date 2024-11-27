@@ -733,3 +733,8 @@ expressApp.get('/api/checkSession', (req, res) => {
 expressApp.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+// إضافة هذا المسار في نهاية ملف server.js
+expressApp.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+  
