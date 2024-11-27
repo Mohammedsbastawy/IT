@@ -1,23 +1,19 @@
 {
-  "name": "my-node-app",
+  "name": "ithelpdesk",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Your project description",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'No build step required' && exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.3",
+    "express": "^4.17.1",
+    "firebase": "^9.1.2",
+    "dotenv": "^8.2.0",
     "cors": "^2.8.5",
-    "express": "^4.21.1",
-    "express-session": "^1.18.1",
-    "firebase": "^11.0.1",
-    "mongoose": "^8.8.0",
-    "sqlite3": "^5.1.7"
-  },
-  "description": ""
+    "body-parser": "^1.19.0",
+    "express-session": "^1.17.1",
+    "bcrypt": "^5.0.1"
+  }
 }

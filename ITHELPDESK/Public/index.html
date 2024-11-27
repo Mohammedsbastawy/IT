@@ -120,32 +120,7 @@
     <footer>
         <p>جميع الحقوق محفوظة &copy; 2023</p>
     </footer>
-    <script>
-        function fetchDeviceStats() {
-            // محاكاة طلب الإحصائيات من الخادم
-            fetch('/api/device-statistics')
-                .then(response => response.json())
-                .then(data => {
-                    // تحديث بطاقات الإحصائيات
-                    document.querySelectorAll('.device-stat-card').forEach(card => {
-                        const deviceType = card.querySelector('.device-stat-label').textContent;
-                        const statsData = data[deviceType];
-                        
-                        card.querySelector('.device-stat-number').textContent = statsData.total;
-                        card.querySelector('.backup-warning').textContent = `${statsData.backupNeeded} تحتاج باك أب`;
-                    });
-                })
-                .catch(error => {
-                    console.error('خطأ في جلب الإحصائيات:', error);
-                });
-        }
 
-        // تحديث الإحصائيات عند التحميل
-        document.addEventListener('DOMContentLoaded', fetchDeviceStats);
-
-        // تحديث دوري كل 5 دقائق
-        setInterval(fetchDeviceStats, 5 * 60 * 1000);
-    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
