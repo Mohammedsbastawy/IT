@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>النظام الإداري</title>
+    <style>
+        body {
+            background: #f4f4f9;
+            color: #333;
+            font-family: 'Rubik', sans-serif;
+        }
+        .header-section {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        footer {
+            background: #6a1b9a;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .department-card {
+            text-align: center;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .department-card.active {
+            background-color: #007bff;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .employee-icon {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .employee-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%;
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; 
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* تنسيق الشريط الجانبي */
+
+
+.sidebar a {
+    color: white; /* لون الروابط */
+    display: block; /* جعل الروابط ككتل */
+    padding: 10px 20px; /* مساحة داخلية للروابط */
+    text-decoration: none; /* إزالة التسطير */
+    font-size: 18px; /* حجم الخط */
+}
+
+.sidebar a i {
+    margin-right: 10px; /* مسافة بين الأيقونة والنص */
+}
+
+.sidebar a:hover {
+    background-color: #1A252F; /* تغيير لون الخلفية عند التمرير */
+}
+
+.sidebar .user-info {
+    display: flex; /* استخدام Flexbox لتنسيق المعلومات */
+    align-items: center; /* محاذاة عموديًا */
+    padding: 10px 20px; /* مساحة داخلية */
+    background-color: #34495E; /* لون خلفية قسم معلومات المستخدم */
+    color: white; /* لون النص */
+}
+
+.sidebar-footer {
+    position: absolute; /* وضعه في الأسفل */
+    bottom: 0; /* محاذاة إلى الأسفل */
+    width: 100%; /* عرض كامل */
+    padding: 10px 20px; /* مساحة داخلية */
+}
+
+
+
+body {
+            display: flex; /* استخدام flexbox لتنسيق الصفحة */
+            margin: 0;
+            height: 100vh; /* جعل ارتفاع الصفحة 100% */
+        }
+
+        .sidebar {
+            width: 250px; /* عرض الشريط الجانبي */
+            background-color: #2C3E50; /* لون خلفية الشريط الجانبي */
+            color: white; /* لون النص */
+            padding: 20px; /* مساحة داخلية */
+            flex-shrink: 0; /* منع الشريط الجانبي من الانكماش */
+            position: relative; /* لتسهيل التنسيق */
+            z-index: 1000; /* تأكد من أن الشريط الجانبي فوق المحتوى */
+        }
+
+        .main-content    {
+            flex-grow: 1; /* السماح للمحتوى بالنمو لملء المساحة المتبقية */
+            padding: 20px; /* مساحة داخلية */
+            background-color: #ECF0F1; /* لون خلفية المحتوى */
+            overflow-y: auto; /* السماح بالتمرير العمودي إذا كانت المحتويات أكبر من المساحة */
+        }
+
+        .header-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header-section h1 {
+            margin: 0;
+        }
+ /* Button Styling */
+ .btn {
+            background-color: #3498DB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+    
+        .btn:hover {
+            background-color: #2980B9;
+        }
+    
+        .btn-success {
+            background-color: #28a745;
+        }
+    
+        .btn-success:hover {
+            background-color: #218838;
+        }
+.notifications {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e1b12c; /* لون الخلفية */
+    border-radius: 10px; /* زوايا دائرية */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+    transition: transform 0.3s; /* تأثير التحريك */
+}
+
+.notifications:hover {
+    transform: translateY(-5px); /* تحريك عند التمرير */
+}
+
+.notifications h5 {
+    margin-bottom: 15px;
+    color: #333; /* لون العنوان */
+    font-size: 1.5rem; /* حجم الخط */
+    text-align: center; /* محاذاة إلى المنتصف */
+    font-family: 'Rubik', sans-serif; /* خط أنيق */
+}
+
+#notificationList {
+    list-style-type: none; /* إزالة النقاط من القائمة */
+    padding: 0; /* إزالة الحشو */
+}
+
+#notificationList li {
+    padding: 10px 15px; /* مساحة داخلية */
+    border-radius: 8px; /* زوايا دائرية */
+    margin-bottom: 10px; /* مسافة بين العناصر */
+    background-color: #f0f4f8; /* لون خلفية العنصر */
+    border-left: 5px solid #3498db; /* شريط ملون على اليسار */
+    transition: background-color 0.3s, transform 0.3s; /* تأثير تغيير اللون والتحريك */
+}
+
+#notificationList li:hover {
+    background-color: #e0e7ef; /* لون خلفية عند التمرير */
+    transform: scale(1.02); /* تأثير التحريك عند التمرير */
+}
+
+#notificationList li .device-name {
+    font-weight: bold; /* جعل اسم الجهاز بارز */
+    color: #2c3e50; /* لون نص الجهاز */
+}
+
+#notificationList li .backup-date {
+    font-size: 0.9rem; /* حجم خط أصغر لتاريخ الباك أب */
+    color: #c23616; /* لون رمادي */
+}
+.device-info {
+    cursor: pointer; /* تغيير المؤشر عند التمرير فوق العنصر */
+    padding: 10px; /* مساحة داخلية */
+    background-color: #f0f4f8; /* لون خلفية العنصر */
+    border-radius: 8px; /* زوايا دائرية */
+    transition: background-color 0.3s; /* تأثير تغيير اللون */
+}
+
+.device-info:hover {
+    background-color: #e0e7ef; /* لون خلفية عند التمرير */
+}
+
+.backup-date {
+    padding: 5px 15px; /* مساحة داخلية */
+    color: #7f8c8d; /* لون رمادي */
+    font-size: 0.9rem; /* حجم خط أصغر */
+    margin-top: 5px; /* مسافة من الأعلى */
+}
+    
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="user-info">
+            <span><i class="fas fa-user"></i> <span id="username"></span></span>
+            
+        </div>
+            <!-- قسم الإشعارات -->
+    <div class="notifications">
+        <h5>الإشعارات</h5>
+        <ul id="notificationList">
+            <!-- سيتم إضافة الإشعارات هنا -->
+        </ul>
+    </div>
+
+    <div class="sidebar-footer">
+        <button class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
+    </div>
+        <a href="complaints.html" onclick="loadPage('complaints.html')"><i class="fa-solid fa-bell"></i> الشكاوى</a>
+        <a href="employees.html" onclick="loadPage('employees.html')"><i class="fas fa-users"></i> الموظفين</a>
+        <a href="offices.html" onclick="loadPage('offices.html')"><i class="fas fa-building"></i> المكاتب</a>
+        <a href="devices.html" onclick="loadPage('devices.html')"><i class="fas fa-desktop"></i> الأجهزة</a>
+        <div class="sidebar-footer">
+            <button class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="header-section">
+            <h1>نظام إدارة الأقسام والموظفين</h1>
+        </div>
+        
+        <div class="subheader-section">
+            <h2>إضافة قسم جديد</h2>
+            <input type="text" id="newDepartmentName" placeholder="اسم القسم">
+            <button class="btn btn-primary" onclick="addDepartment()">أضف قسم</button>
+        </div>
+        
+        <div class="subheader-section">
+            <h2>الأقسام</h2>
+            <div id="departmentsList" class="d-flex flex-wrap"></div>
+        </div>
+    
+        <div class="table-container">
+            <button id="addEmployeeBtn" class="btn btn-primary mb-3" style="display:none;" onclick="showAddEmployeeModal()">أضف موظف جديد</button>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>اسم الموظف</th>
+                        <th>اسم المستخدم</th>
+                        <th>كلمة المرور</th>
+                        <th>حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="employeesTableBody">
+                    <!-- سيتم إضافة الموظفين هنا -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+        
+    <!-- نافذة إضافة موظف -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddEmployeeModal()">&times;</span>
+            <h2>إضافة موظف</h2>
+            <label for="employeeName">اسم الموظف:</label>
+            <input type="text" id="employeeName" class="form-control mb-2">
+            <label for="employeeUsername">اسم المستخدم:</label>
+            <input type="text" id="employeeUsername" class="form-control mb-2">
+            <label for="employeePassword">كلمة المرور:</label>
+            <input type="text" id="employeePassword" class="form-control mb-2">
+            <button type="button" class="btn btn-primary" onclick="addEmployee()">أضف موظف</button>
+        </div>
+    </div>
+
+    <div id="confirmDeleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmDeleteModal()">&times;</span>
+            <h2>تأكيد الحذف</h2>
+            <p>هل أنت متأكد من حذف هذا القسم؟</p>
+            <button class="btn btn-danger" id="confirmDeleteBtn">حذف</button>
+            <button class="btn btn-secondary" onclick="closeConfirmDeleteModal()">إلغاء</button>
+        </div>
+    </div>
+    <script>
+        // دالة لإظهار نافذة تأكيد الحذف
+        function showConfirmDeleteModal(departmentId) {
+            const modal = document.getElementById('confirmDeleteModal');
+            modal.style.display = 'block';
+            document.getElementById('confirmDeleteBtn').onclick = () => confirmDeleteDepartment(departmentId);
+        }
+
+        // دالة لإغلاق نافذة تأكيد الحذف
+        function closeConfirmDeleteModal() {
+            const modal = document.getElementById('confirmDeleteModal');
+            modal.style.display = 'none';
+        }
+
+        // دالة لتأكيد الحذف
+        async function confirmDeleteDepartment(departmentId) {
+            const response = await fetch(`/api/department/${departmentId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('تم حذف القسم بنجاح');
+                closeConfirmDeleteModal();
+                loadDepartments(); // إعادة تحميل الأقسام
+            } else {
+                alert('حدث خطأ أثناء حذف القسم.');
+            }
+        }
+
+        // إضافة خاصية النقر بالزر الأيمن لحذف قسم
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            const departmentCards = document.querySelectorAll('.department-card');
+            departmentCards.forEach(card => {
+                card.classList.remove('highlight');
+            });
+            if (event.target.closest('.department-card')) {
+                const departmentCard = event.target.closest('.department-card');
+                departmentCard.classList.add('highlight');
+                const departmentId = departmentCard.getAttribute('onclick').match(/'([^']+)'/)[1];
+                showConfirmDeleteModal(departmentId);
+            }
+        });
+
+        async function showDepartmentDetails(departmentId) {
+            const departmentsList = document.getElementById('departmentsList');
+            const employeesTableBody = document.getElementById('employeesTableBody');
+            const addEmployeeBtn = document.getElementById('addEmployeeBtn');
+
+            // إضافة تأثير لتمييز القسم النشط
+            const departmentCards = departmentsList.getElementsByClassName('department-card');
+            for (let card of departmentCards) {
+                card.classList.remove('active');
+            }
+            const activeCard = document.querySelector(`.department-card[onclick="showDepartmentDetails('${departmentId}')"]`);
+            if (activeCard) {
+                activeCard.classList.add('active');
+            }
+
+            employeesTableBody.innerHTML = ''; // تفريغ محتوى الجدول الحالي
+            addEmployeeBtn.style.display = 'block'; // إظهار زر إضافة موظف
+
+            // تحميل بيانات الموظفين وإضافتها إلى الجدول
+            const employeesResponse = await fetch(`/api/department/${departmentId}/employees`);
+            const employees = await employeesResponse.json();
+            employees.forEach(employee => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee.name}</td>
+                    <td>${employee.username}</td>
+                    <td>${employee.password}</td>
+                    <td><button class="btn btn-danger" onclick="showConfirmDeleteEmployeeModal('${departmentId}', '${employee.id}')">حذف</button></td>
+                `;
+                employeesTableBody.appendChild(row);
+            });
+
+            // ضبط القسم الحالي في الزر لإضافة موظف جديد
+            addEmployeeBtn.setAttribute('onclick', `showAddEmployeeModal('${departmentId}')`);
+        }
+
+        // دالة لإظهار نافذة تأكيد حذف موظف
+        function showConfirmDeleteEmployeeModal(departmentId, employeeId) {
+            const modal = document.getElementById('confirmDeleteEmployeeModal');
+            modal.style.display = 'block';
+            document.getElementById('confirmDeleteEmployeeBtn').onclick = () => confirmDeleteEmployee(departmentId, employeeId);
+        }
+
+        // دالة لإغلاق نافذة تأكيد حذف موظف
+        function closeConfirmDeleteEmployeeModal() {
+            const modal = document.getElementById('confirmDeleteEmployeeModal');
+            modal.style.display = 'none';
+        }
+
+        // دالة لتأكيد حذف موظف
+        async function confirmDeleteEmployee(departmentId, employeeId) {
+            const response = await fetch(`/api/department/${departmentId}/employees/${employeeId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('تم حذف الموظف بنجاح');
+                closeConfirmDeleteEmployeeModal();
+                showDepartmentDetails(departmentId); // تحديث قائمة الموظفين
+            } else {
+                alert('حدث خطأ أثناء حذف الموظف.');
+            }
+        }
+        // دالة لإضافة موظف جديد
+        async function addEmployee() {
+            const departmentId = document.getElementById('addEmployeeModal').dataset.departmentId;
+            const employee = {
+                name: document.getElementById('employeeName').value,
+                username: document.getElementById('employeeUsername').value,
+                password: document.getElementById('employeePassword').value // نرسل كلمة المرور كما هي
+            };
+
+            const response = await fetch(`/api/department/${departmentId}/employees`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(employee)
+            });
+
+            if (response.ok) {
+                alert('تمت إضافة الموظف بنجاح');
+                closeAddEmployeeModal();
+                showDepartmentDetails(departmentId); // إعادة تحميل تفاصيل القسم لتحديث الموظفين
+            } else {
+                alert('حدث خطأ أثناء إضافة الموظف.');
+            }
+        }
+
+        // دالة لإظهار نافذة إضافة موظف
+        function showAddEmployeeModal(departmentId) {
+            const modal = document.getElementById('addEmployeeModal');
+            modal.style.display = 'block';
+            // تعيين معرف القسم في نافذة الإضافة
+            modal.dataset.departmentId = departmentId;
+        }
+
+        // دالة لإغلاق نافذة إضافة موظف
+        function closeAddEmployeeModal() {
+            const modal = document.getElementById('addEmployeeModal');
+            modal.style.display = 'none';
+        }
+
+        // تحميل الأقسام عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDepartments();
+        });
+
+        // دالة لتحميل الأقسام
+        async function loadDepartments() {
+            try {
+                const response = await fetch('/api/departments');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const departments = await response.json();
+                const departmentsList = document.getElementById('departmentsList');
+                departmentsList.innerHTML = '';
+                departments.forEach(department => {
+                    const div = document.createElement('div');
+                    div.className = 'department-card';
+                    div.innerHTML = `
+                        <img src="https://img.icons8.com/ios-filled/50/000000/office.png" alt="Office Icon"/>
+                        <h3>${department.name}</h3>
+                    `;
+                    div.setAttribute('onclick', `showDepartmentDetails('${department.id}')`);
+                    departmentsList.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error loading departments:', error);
+                alert('حدث خطأ أثناء تحميل الأقسام.');
+            }
+        }
+
+        // دالة لإضافة قسم جديد
+        async function addDepartment() {
+            const newDepartmentName = document.getElementById('newDepartmentName').value;
+            const response = await fetch('/api/departments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: newDepartmentName })
+            });
+            if (response.ok) {
+                alert('تمت إضافة القسم بنجاح');
+                loadDepartments(); // إعادة تحميل الأقسام
+            } else {
+                alert('حدث خطأ أثناء إضافة القسم.');
+            }
+        }
+    </script>
+    <script>
+        // دالة لإظهار نافذة تأكيد حذف موظف
+        function showConfirmDeleteEmployeeModal(departmentId, employeeId) {
+            const modal = document.getElementById('confirmDeleteEmployeeModal');
+            modal.style.display = 'block';
+            document.getElementById('confirmDeleteEmployeeBtn').onclick = () => confirmDeleteEmployee(departmentId, employeeId);
+        }
+
+        // دالة لإغلاق نافذة تأكيد حذف موظف
+        function closeConfirmDeleteEmployeeModal() {
+            const modal = document.getElementById('confirmDeleteEmployeeModal');
+            modal.style.display = 'none';
+        }
+
+        // دالة لتأكيد حذف موظف
+        async function confirmDeleteEmployee(departmentId, employeeId) {
+            const response = await fetch(`/api/department/${departmentId}/employees/${employeeId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('تم حذف الموظف بنجاح');
+                closeConfirmDeleteEmployeeModal();
+                showDepartmentDetails(departmentId); // تحديث قائمة الموظفين
+            } else {
+                alert('حدث خطأ أثناء حذف الموظف.');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/getUsername')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('لم يتم تسجيل الدخول');
+            }
+        })
+        .then(data => {
+            document.getElementById('username').textContent = data.username; // تأكد من وجود عنصر بالمعرف 'username'
+        })
+        .catch(error => {
+            console.error('Error fetching username:', error);
+            // يمكنك إعادة توجيه المستخدم إلى صفحة تسجيل الدخول إذا لم يكن مسجلاً دخوله
+            window.location.href = 'login.html';
+        });
+});
+function loadUpcomingBackupDevices() {
+    fetch('/api/devices')
+        .then(response => response.json())
+        .then(devices => {
+            const notificationList = document.getElementById('notificationList');
+            notificationList.innerHTML = ''; // تفريغ القائمة الحالية
+
+            const today = new Date();
+            const twoDaysFromNow = new Date();
+            twoDaysFromNow.setDate(today.getDate() + 2);
+
+            const upcomingDevices = devices.filter(device => {
+                const nextBackupDate = new Date(device.nextBackupDate);
+                return nextBackupDate <= twoDaysFromNow && nextBackupDate >= today;
+            });
+
+            if (upcomingDevices.length > 0) {
+                upcomingDevices.forEach(device => {
+                    const nextBackupDate = new Date(device.nextBackupDate);
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <div class="device-info" onclick="toggleBackupDate(this)">
+                            <span class="device-name">${device.name}</span> 
+                            <span class="department-name">(${device.department})</span>
+                        </div>
+                        <div class="backup-date" style="display: none;">
+                            <span>الباك أب القادم: ${nextBackupDate.toLocaleDateString()}</span>
+                        </div>
+                    `;
+                    notificationList.appendChild(listItem);
+                });
+            } else {
+                const noNotificationItem = document.createElement('li');
+                noNotificationItem.textContent = 'لا توجد أجهزة بحاجة إلى باك أب قريب.';
+                notificationList.appendChild(noNotificationItem);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching devices:', error);
+        });
+}
+
+function toggleBackupDate(element) {
+    const backupDateDiv = element.nextElementSibling;
+    backupDateDiv.style.display = backupDateDiv.style.display === "none" ? "block" : "none";
+}
+
+// تحميل الإشعارات عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    loadUpcomingBackupDevices();
+});
+    </script>
+
+    <div id="confirmDeleteEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfirmDeleteEmployeeModal()">&times;</span>
+            <h2>تأكيد الحذف</h2>
+            <p>هل أنت متأكد من حذف هذا الموظف؟</p>
+            <button class="btn btn-danger" id="confirmDeleteEmployeeBtn">حذف</button>
+            <button class="btn btn-secondary" onclick="closeConfirmDeleteEmployeeModal()">إلغاء</button>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

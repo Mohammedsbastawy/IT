@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar">
+    <script>
+        // التحقق من حالة تسجيل الدخول
+        fetch('/api/checkSession')
+            .then(response => {
+                if (response.status !== 200) {
+                    // إذا لم يكن المستخدم مسجلاً دخوله، توجيهه إلى صفحة تسجيل الدخول
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.location.href = 'login.html'; // إعادة توجيه في حالة حدوث خطأ
+            });
+    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- ربط ملف CSS هنا -->
+    <title>إحصائيات الشكاوى</title>
+</head>
+<body>
+    <header class="bg-dark text-white p-3">
+        <h1>إحصائيات الشكاوى</h1>
+    </header>
+
+    <div class="container-fluid"> <!-- استخدام container-fluid لتغطية كامل العرض -->
+        <table class="table table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('name')">اسم الموظف <span id="nameSort" class="sort-arrow">▲▼</span></th>
+                    <th onclick="sortTable('department')">القسم <span id="departmentSort" class="sort-arrow">▲▼</span></th>
+                    <th onclick="sortTable('count')">عدد الشكاوى <span id="countSort" class="sort-arrow">▲▼</span></th>
+                </tr>
+            </thead>
+            <tbody id="statisticsBody">
+                <!-- سيتم إضافة البيانات هنا -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- نافذة عرض الشكاوى -->
+    <div class="modal fade" id="complaintModal" tabindex="-1" role="dialog" aria-labelledby="complaintModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="complaintModalLabel">الشكاوى</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="complaintModalBody">
+                    <!-- سيتم إضافة الشكاوى هنا -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let currentSort = { key: '', order: 'asc' };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayStatistics();
+        });
+
+        function displayStatistics() {
+            // تحميل الشكاوى من واجهة برمجة التطبيقات
+            fetch('/api/complaints')
+                .then(response => response.json())
+                .then(complaints => {
+                    const statistics = {};
+
+                    // حساب عدد الشكاوى لكل موظف
+                    complaints.forEach(complaint => {
+                        const key = `${complaint.complainantName}|${complaint.complainantDepartment}`;
+                        if (!statistics[key]) {
+                            statistics[key] = { count: 0, complaints: [] };
+                        }
+                        statistics[key].count++;
+                        statistics[key].complaints.push(complaint);
+                    });
+
+                    const statisticsArray = Object.entries(statistics).map(([key, value]) => {
+                        const [name, department] = key.split('|');
+                        return { name, department, count: value.count, complaints: value.complaints };
+                    });
+
+                    // الفرز حسب المعايير الحالية
+                    if (currentSort.key) {
+                        statisticsArray.sort((a, b) => {
+                            const valA = currentSort.key === 'count' ? a[currentSort.key] : a[currentSort.key].localeCompare(b[currentSort.key]);
+                            const valB = currentSort.key === 'count' ? b[currentSort.key] : b[currentSort.key].localeCompare(a[currentSort.key]);
+                            return currentSort.order === 'asc' ? valA - valB : valB - valA;
+                        });
+                    }
+
+                    const statisticsBody = document.getElementById('statisticsBody');
+                    statisticsBody.innerHTML = '';
+
+                    statisticsArray.forEach(({ name, department, count, complaints }) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><a href="#" class="employee-link" data-complaints='${JSON.stringify(complaints)}'>${name}</a></td>
+                            <td><a href="#" class="department-link" data-complaints='${JSON.stringify(complaints)}'>${department}</a></td>
+                            <td>${count}</td>
+                        `;
+                        statisticsBody.appendChild(row);
+                    });
+
+                    // إضافة الأحداث للنوافذ المنبثقة
+                    document.querySelectorAll('.employee-link, .department-link').forEach(link => {
+                        link.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            const complaints = JSON.parse(this.getAttribute('data-complaints'));
+                            showComplaints(complaints);
+                        });
+                    });
+
+                    // تحديث الأسهم
+                    updateSortArrows();
+                });
+        }
+
+        function showComplaints(complaints) {
+            const complaintModalBody = document.getElementById('complaintModalBody');
+            complaintModalBody.innerHTML = '';
+
+            complaints.forEach(complaint => {
+                const complaintDiv = document.createElement('div');
+                complaintDiv.className = 'complaint-item';
+                complaintDiv.innerHTML = `
+                    <p><strong>${complaint.complainantName}</strong> <small>${complaint.date}</small></p>
+                    <p>${complaint.text}</p>
+                    <p>الحالة: ${complaint.status}</p>
+                    ${complaint.status === 'deferred' && complaint.deferredReason ? `<p>سبب التأجيل: ${complaint.deferredReason}</p>` : ''}
+                    <hr>
+                `;
+                complaintModalBody.appendChild(complaintDiv);
+            });
+
+            $('#complaintModal').modal('show');
+        }
+
+        function sortTable(key) {
+            if (currentSort.key === key) {
+                currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.key = key;
+                currentSort.order = 'asc';
+            }
+            displayStatistics();
+        }
+
+        function updateSortArrows() {
+            document.getElementById('nameSort').innerText = currentSort.key === 'name' ? (currentSort.order === 'asc' ? '▲' : '▼') : '';
+            document.getElementById('departmentSort').innerText = currentSort.key === 'department' ? (currentSort.order === 'asc' ? '▲' : '▼') : '';
+            document.getElementById('countSort').innerText = currentSort.key === 'count' ? (currentSort.order === 'asc' ? '▲' : '▼') : '';
+        }
+    </script>
+</body>
+</html>
