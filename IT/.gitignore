@@ -48,3 +48,9 @@ yarn-error.log*
 
 # Mac system files
 .DS_Store
+* text=auto
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.md text eol=lf
