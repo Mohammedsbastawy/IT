@@ -3,10 +3,23 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const cors = require('cors'); 
+
+// إعداد Firebase Admin SDK
+const admin = require('firebase-admin');
+const serviceAccount = require('./config/serviceAccountKey.json'); // تأكد من أن المسار صحيح
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://itdb-6e840.firebaseio.com'
+});
+
+const db = admin.firestore();
+
+// إعداد Firebase Client SDK
 const { initializeApp } = require("firebase/app");
 const { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, query, where, orderBy, limit, getCountFromServer, doc, setDoc,  updateDoc } = require("firebase/firestore");
 
-// إعداد Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD4IQSUq6uOJ8uOWRGiCXXX",
   authDomain: "itdb-6e840.firebaseapp.com",
@@ -17,12 +30,12 @@ const firebaseConfig = {
   measurementId: "G-NKL02WJVZB"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const clientDb = getFirestore(firebaseApp);
+
 const expressApp = express();
 const PORT = 3000;
 
-const cors = require('cors');
 expressApp.use(cors({
   origin: '*', // يمكنك تحديد النطاقات المسموح بها هنا
 }));
@@ -35,6 +48,14 @@ expressApp.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+
+// هنا يمكنك إضافة طرق (routes) الخاصة بك
+// على سبيل المثال:
+expressApp.get('/api/some-endpoint', (req, res) => {
+  res.send('Hello World');
+});
+
+
 // مسار لتحديث تواريخ الباك أب
 expressApp.put('/api/devices/:deviceId', async (req, res) => {
     const deviceId = req.params.deviceId; // هنا يتم الحصول على deviceId من المسار
